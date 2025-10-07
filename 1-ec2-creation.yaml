@@ -8,6 +8,7 @@
     domain_name: "sindhuworld.icu"
     instances:
     - frontend
+    - mysql
 
   tasks:
   - name: create ec2 instance
