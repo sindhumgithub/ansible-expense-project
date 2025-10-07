@@ -1,5 +1,5 @@
-- name:  Expense project 
-  host: frontend
+- name: Expense project 
+  hosts: frontend
   become: yes
 
   tasks:
