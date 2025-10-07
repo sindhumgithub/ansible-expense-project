@@ -9,6 +9,7 @@
     instances:
     - frontend
     - mysql
+    - backend
 
   tasks:
   - name: create ec2 instance
