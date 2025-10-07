@@ -1,5 +1,5 @@
 - name: Expense project 
-  hosts: 172.31.21.105
+  hosts: frontend
   become: yes
 
   tasks:
