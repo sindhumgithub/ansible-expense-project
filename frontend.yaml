@@ -1,0 +1,26 @@
+- name:  Expense project 
+  host: frontend
+  become: yes
+
+  tasks:
+  - name: Install nginx
+    ansible.builtin.package:
+      name: nginx
+      state: present
+
+  - name: Enable nginx service 
+    ansible.builtin.service:
+      name: nginx
+      enabled: yes
+
+  - name: Started nginx service 
+    ansible.builtin.service:
+      name: nginx
+      state: started
+
+
+
+
+
+
+
