@@ -29,6 +29,19 @@
       src: /tmp/frontend.zip
       dest: /usr/share/nginx/html
       remote_src: yes 
+
+  - name: copy expense content
+    ansible.builtin.copy:
+      src: expense.conf
+      dest: /etc/nginx/default.d/expense.conf
+
+  - name: Restart service nginx
+    ansible.builtin.service:
+    name: nginx
+    state: started
+    enabled: yes
+
+  
       
 
 
