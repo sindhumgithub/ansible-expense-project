@@ -1,6 +1,6 @@
-# - name: create ec2 and r53
-#   hosts: local
-#   connection: local
+- name: create ec2 and r53
+  hosts: local
+  connection: local
 #   vars:
 #     ami_id: ami-09c813fb71547fc4f
 #     sg_id: sg-023c097e027f7e100
@@ -33,7 +33,6 @@
 #   #     value: "{{ item.instances[0].private_ip_address }}"
 #   #     overwrite: true
 #   #   loop: "{{ ec2_output.results }}"
-
-  - name: print hello world
+  tasks:
     ansible.builtin.debug:
       msg: "Hello world from Ansible"
