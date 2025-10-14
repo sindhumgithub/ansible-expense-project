@@ -1,0 +1,70 @@
+- name: Application server configuration
+  hosts: backend
+  become: yes
+  tasks:
+  - name: Display module is disabled.
+    ansible.builtin.command: dnf module disable nodejs -y
+  - name: Display module is enabled.
+    ansible.builtin.command: dnf module enable nodejs:20 -y
+  - name: Install required softwares 
+    ansible.builtin.dnf:
+      name: "{{ item }}"
+      state: latest
+    loop:
+    - nodejs
+    - mysql
+
+  - name: remove app directory
+    ansible.builtin.file:
+      path: /app
+      state: absent
+  
+  - name: Create application user
+    ansible.builtin.user:
+      name: expense
+      state: present
+
+  - name: Create application directory
+    ansible.builtin.file:
+      path: /app
+      state: directory
+
+  - name: Delete user file
+    ansible.builtin.file:
+      path: /tmp/backend.zip
+      state: absent
+
+  - name: download user application
+    ansible.builtin.get_url:
+      url: https://expense-joindevops.s3.us-east-1.amazonaws.com/expense-backend-v2.zip
+      dest: /tmp/backend.zip
+
+  - name: extract user application
+    ansible.builtin.unarchive:
+      src: /tmp/backend.zip
+      dest: /app
+      remote_src: yes
+
+  - name: install dependencies
+    community.general.npm:
+      path: /app
+
+  - name: copy user service
+    ansible.builtin.copy:
+      src: backend.service
+      dest: /etc/systemd/system/backend.service
+
+  - name: daemon reload enable and start
+    ansible.builtin.systemd_service:
+      name: user
+      enabled: true
+      state: started
+      daemon_reload: true
+    
+  - name: load application schema using MYSQL 
+    ansible.builtin.shell: mysql -h mysql.sindhuworld.icu -uroot -pExpenseApp@1 < /app/schema/backend.sql
+  
+  - name: Restarted mysql backend
+    ansible.builtin.systemd:
+      name: backend
+      state: restarted

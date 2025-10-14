@@ -10,7 +10,7 @@
 
   - name: Enabled and Started nginx service 
     ansible.builtin.service:
-      name: nginx
+      name: mysqld
       state: started
       enabled: yes
 
