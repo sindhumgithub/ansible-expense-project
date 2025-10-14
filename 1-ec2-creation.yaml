@@ -1,4 +1,4 @@
-- name: create ec2 and r53
+- name: create ec2 and r53   #play
   hosts: localhost
   connection: local
   vars:
@@ -9,7 +9,7 @@
     instances:
       - frontend
     # - mysql
-    # - backend
+      - backend
 
   tasks:
   - name: create ec2 instance
@@ -23,7 +23,19 @@
     loop: "{{ instances }}"
     register: ec2_output
 
-  - name: create route53 record
+  - name: create route53 record to create application serbver and database sevrer
+    amazon.aws.route53:
+      state: present
+      zone: "{{ domain_name }}"
+      record: "{{ item }}.{{ domain_name }}"   #backend.sindhuworld.icu 
+      type: A
+      ttl: 1
+      value: "{{ item.instances[0].public_ip_address }}"
+      overwrite: true
+    loop: "{{ ec2_output.results }}"
+
+
+  - name: create route53 record to create frontend server 
     amazon.aws.route53:
       state: present
       zone: "{{ domain_name }}"
