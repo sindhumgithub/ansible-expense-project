@@ -1,0 +1,20 @@
+- name: MySQL server configuration
+  hosts: mysql
+  become: yes
+
+  tasks:
+  - name: Install MYSQL server
+    ansible.builtin.package:
+      name: mysql
+      state: present
+
+  - name: Enabled and Started nginx service 
+    ansible.builtin.service:
+      name: nginx
+      state: started
+      enabled: yes
+
+  - name: setup root password
+    ansible.builtin.command: mysql_secure_installation --set-root-pass ExpenseApp@1
+
+    

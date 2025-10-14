@@ -1,0 +1,13 @@
+- name: Application server configuration
+  hosts: backend
+  become: yes
+  tasks:
+  - name: Display module is disabled.
+    ansible.builtin.command: dnf module disable nodejs -y
+  - name: Display module is enabled.
+    ansible.builtin.command: dnf module enable nodejs:20 -y
+  - name: Install the latest version of Apache
+    ansible.builtin.dnf:
+      name: dnf
+      state: latest
+    
